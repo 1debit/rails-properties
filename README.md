@@ -1,10 +1,6 @@
-# Settings for Rails
+# Properties for Rails
 
-[![Build Status](https://travis-ci.org/ledermann/rails-settings.svg?branch=master)](https://travis-ci.org/ledermann/rails-settings)
-[![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.svg)](https://codeclimate.com/github/ledermann/rails-settings)
-[![Coverage Status](https://coveralls.io/repos/ledermann/rails-settings/badge.svg?branch=master)](https://coveralls.io/r/ledermann/rails-settings?branch=master)
-
-Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.
+Ruby gem to handle properties for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.
 
 ## Requirements
 
@@ -17,24 +13,24 @@ Ruby gem to handle settings for ActiveRecord instances by storing them as serial
 Include the gem in your Gemfile and run `bundle` to install it:
 
 ```ruby
-gem 'ledermann-rails-settings'
+gem 'rails-properties'
 ```
 
 Generate and run the migration:
 
 ```shell
-rails g rails_settings:migration
+rails g rails_properties:migration
 rake db:migrate
 ```
 
 
 ## Usage
 
-### Define settings
+### Define properties
 
 ```ruby
 class User < ActiveRecord::Base
-  has_settings do |s|
+  has_properties do |s|
     s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => false }
     s.key :calendar,  :defaults => { :scope => 'company'}
   end
@@ -45,18 +41,18 @@ If no defaults are needed, a simplified syntax can be used:
 
 ```ruby
 class User < ActiveRecord::Base
-  has_settings :dashboard, :calendar
+  has_properties :dashboard, :calendar
 end
 ```
 
-Every setting is handled by the class `RailsSettings::SettingObject`. You can use your own class, e.g. for validations:
+Every property is handled by the class `RailsProperties::PropertyObject`. You can use your own class, e.g. for validations:
 
 ```ruby
 class Project < ActiveRecord::Base
-  has_settings :info, :class_name => 'ProjectSettingObject'
+  has_properties :info, :class_name => 'ProjectPropertyObject'
 end
 
-class ProjectSettingObject < RailsSettings::SettingObject
+class ProjectPropertyObject < RailsProperties::PropertyObject
   validate do
     unless self.owner_name.present? && self.owner_name.is_a?(String)
       errors.add(:base, "Owner name is missing")
@@ -65,82 +61,70 @@ class ProjectSettingObject < RailsSettings::SettingObject
 end
 ```
 
-### Set settings
+### Set properties
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).theme = 'black'
-user.settings(:calendar).scope = 'all'
-user.settings(:calendar).display = 'daily'
-user.save! # saves new or changed settings, too
+user.properties(:dashboard).theme = 'black'
+user.properties(:calendar).scope = 'all'
+user.properties(:calendar).display = 'daily'
+user.save! # saves new or changed properties, too
 ```
 
 or
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).update_attributes! :theme => 'black'
-user.settings(:calendar).update_attributes! :scope => 'all', :display => 'daily'
+user.properties(:dashboard).update_attributes! :theme => 'black'
+user.properties(:calendar).update_attributes! :scope => 'all', :display => 'daily'
 ```
 
 
-### Get settings
+### Get properties
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).theme
+user.properties(:dashboard).theme
 # => 'black
 
-user.settings(:dashboard).view
+user.properties(:dashboard).view
 # => 'monthly'  (it's the default)
 
-user.settings(:calendar).scope
+user.properties(:calendar).scope
 # => 'all'
 ```
 
-### Delete settings
+### Delete properties
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).update_attributes! :theme => nil
+user.properties(:dashboard).update_attributes! :theme => nil
 
-user.settings(:dashboard).view = nil
-user.settings(:dashboard).save!
+user.properties(:dashboard).view = nil
+user.properties(:dashboard).save!
 ```
 
 ### Using scopes
 
 ```ruby
-User.with_settings
-# => all users having any setting
+User.with_properties
+# => all users having any property
 
-User.without_settings
-# => all users without having any setting
+User.without_properties
+# => all users without having any property
 
-User.with_settings_for(:calendar)
-# => all users having a setting for 'calender'
+User.with_properties_for(:calendar)
+# => all users having a property for 'calender'
 
-User.without_settings_for(:calendar)
-# => all users without having settings for 'calendar'
+User.without_properties_for(:calendar)
+# => all users without having properties for 'calendar'
 ```
 
 ### Eager Loading
 ```ruby
-User.includes(:setting_objects)
-# => Eager load setting_objects when querying many users
+User.includes(:property_objects)
+# => Eager load property_objects when querying many users
 ```
-
-## Compatibility
-
-Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible with Version 1. In addition, Rails 2.3 is not supported anymore. But the database schema is unchanged, so you can continue to use the data created by 1.x, no conversion is needed.
-
-If you don't want to upgrade, you find the old version in the [1.x](https://github.com/ledermann/rails-settings/commits/1.x) branch. But don't expect any updates there.
-
-
-## Changelog
-
-See https://github.com/ledermann/rails-settings/releases
-
 
 ## License
 
@@ -148,4 +132,4 @@ MIT License
 
 Copyright (c) 2012-2018 [Georg Ledermann](http://www.georg-ledermann.de)
 
-This gem is a complete rewrite of [rails-settings](https://github.com/Squeegy/rails-settings) by [Alex Wayne](https://github.com/Squeegy)
+This gem is a rename of [rails-settings](https://github.com/ledermann/rails-settings) by [Georg Ledermann](https://github.com/ledermann)

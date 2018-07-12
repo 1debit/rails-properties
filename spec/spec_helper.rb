@@ -31,40 +31,40 @@ RSpec.configure do |config|
   end
 
   config.after :suite do
-    RailsSettingsMigration.migrate(:down)
+    RailsPropertiesMigration.migrate(:down)
   end
 end
 
 require 'active_record'
 require 'protected_attributes' if ENV['PROTECTED_ATTRIBUTES'] == 'true'
-require 'rails-settings'
+require 'rails-properties'
 
 if I18n.respond_to?(:enforce_available_locales=)
   I18n.enforce_available_locales = false
 end
 
 class User < ActiveRecord::Base
-  has_settings do |s|
+  has_properties do |s|
     s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => true }
     s.key :calendar,  :defaults => { :scope => 'company'}
   end
 end
 
 class GuestUser < User
-  has_settings do |s|
+  has_properties do |s|
     s.key :dashboard, :defaults => { :theme => 'red', :view => 'monthly', :filter => true }
   end
 end
 
 class Account < ActiveRecord::Base
-  has_settings :portal
+  has_properties :portal
 end
 
 class Project < ActiveRecord::Base
-  has_settings :info, :class_name => 'ProjectSettingObject'
+  has_properties :info, :class_name => 'ProjectPropertyObject'
 end
 
-class ProjectSettingObject < RailsSettings::SettingObject
+class ProjectPropertyObject < RailsProperties::PropertyObject
   validate do
     unless self.owner_name.present? && self.owner_name.is_a?(String)
       errors.add(:base, "Owner name is missing")
@@ -83,8 +83,8 @@ def setup_db
   end
   puts
 
-  require File.expand_path('../../lib/generators/rails_settings/migration/templates/migration.rb', __FILE__)
-  RailsSettingsMigration.migrate(:up)
+  require File.expand_path('../../lib/generators/rails_properties/migration/templates/migration.rb', __FILE__)
+  RailsPropertiesMigration.migrate(:up)
 
   ActiveRecord::Schema.define(:version => 1) do
     create_table :users do |t|
@@ -105,7 +105,7 @@ end
 def clear_db
   User.delete_all
   Account.delete_all
-  RailsSettings::SettingObject.delete_all
+  RailsProperties::PropertyObject.delete_all
 end
 
 setup_db

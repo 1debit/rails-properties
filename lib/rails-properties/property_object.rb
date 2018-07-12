@@ -1,21 +1,21 @@
-module RailsSettings
-  class SettingObject < ActiveRecord::Base
-    self.table_name = 'settings'
+module RailsProperties
+  class PropertyObject < ActiveRecord::Base
+    self.table_name = 'properties'
 
     belongs_to :target, :polymorphic => true
 
     validates_presence_of :var, :target_type
     validate do
-      errors.add(:value, "Invalid setting value") unless value.is_a? Hash
+      errors.add(:value, "Invalid property value") unless value.is_a? Hash
 
-      unless _target_class.default_settings[var.to_sym]
+      unless _target_class.default_properties[var.to_sym]
         errors.add(:var, "#{var} is not defined!")
       end
     end
 
     serialize :value, Hash
 
-    if RailsSettings.can_protect_attributes?
+    if RailsProperties.can_protect_attributes?
       # attr_protected can not be used here because it touches the database which is not connected yet.
       # So allow no attributes and override <tt>#sanitize_for_mass_assignment</tt>
       attr_accessible
@@ -25,7 +25,7 @@ module RailsSettings
     REGEX_GETTER = /\A([a-z]\w+)\Z/i
 
     def respond_to?(method_name, include_priv=false)
-      super || method_name.to_s =~ REGEX_SETTER || _setting?(method_name)
+      super || method_name.to_s =~ REGEX_SETTER || _property?(method_name)
     end
 
     def method_missing(method_name, *args, &block)
@@ -45,7 +45,7 @@ module RailsSettings
     end
 
   protected
-    if RailsSettings.can_protect_attributes?
+    if RailsProperties.can_protect_attributes?
       # Simulate attr_protected by removing all regular attributes
       def sanitize_for_mass_assignment(attributes, role = nil)
         attributes.except('id', 'var', 'value', 'target_id', 'target_type', 'created_at', 'updated_at')
@@ -55,7 +55,7 @@ module RailsSettings
   private
     def _get_value(name)
       if value[name].nil?
-        _target_class.default_settings[var.to_sym][name]
+        _target_class.default_properties[var.to_sym][name]
       else
         value[name]
       end
@@ -77,8 +77,8 @@ module RailsSettings
       target_type.constantize
     end
 
-    def _setting?(method_name)
-      _target_class.default_settings[var.to_sym].keys.include?(method_name.to_s)
+    def _property?(method_name)
+      _target_class.default_properties[var.to_sym].keys.include?(method_name.to_s)
     end
   end
 end

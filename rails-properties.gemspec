@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rails-settings/version'
+require 'rails-properties/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = 'ledermann-rails-settings'
-  gem.version       = RailsSettings::VERSION
+  gem.name          = 'rails-properties'
+  gem.version       = RailsProperties::VERSION
   gem.licenses      = ['MIT']
-  gem.authors       = ['Georg Ledermann']
-  gem.email         = ['mail@georg-ledermann.de']
-  gem.description   = %q{Settings gem for Ruby on Rails}
-  gem.summary       = %q{Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.}
-  gem.homepage      = 'https://github.com/ledermann/rails-settings'
+  gem.authors       = ['Fletcher Fowler']
+  gem.email         = ['fletch@fzf.me']
+  gem.description   = %q{Properties gem for Ruby on Rails}
+  gem.summary       = %q{Ruby gem to handle properties for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.}
+  gem.homepage      = 'https://github.com/1debit/rails-properties'
   gem.required_ruby_version = '>= 1.9.3'
 
   gem.files         = `git ls-files`.split($/)

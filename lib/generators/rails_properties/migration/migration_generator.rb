@@ -1,15 +1,15 @@
 require 'rails/generators'
 require 'rails/generators/migration'
 
-module RailsSettings
+module RailsProperties
   class MigrationGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 
-    desc "Generates migration for rails-settings"
+    desc "Generates migration for rails-properties"
     source_root File.expand_path('../templates', __FILE__)
 
     def create_migration_file
-      migration_template 'migration.rb', 'db/migrate/rails_settings_migration.rb'
+      migration_template 'migration.rb', 'db/migrate/rails_properties_migration.rb'
     end
 
     def self.next_migration_number(dirname)

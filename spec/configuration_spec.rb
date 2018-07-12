@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module RailsSettings
+module RailsProperties
   class Dummy
   end
 
@@ -8,28 +8,28 @@ module RailsSettings
     it "should define single key" do
       Configuration.new(Dummy, :dashboard)
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.default_properties).to eq({ :dashboard => {} })
+      expect(Dummy.property_object_class_name).to eq('RailsProperties::PropertyObject')
     end
 
     it "should define multiple keys" do
       Configuration.new(Dummy, :dashboard, :calendar)
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.default_properties).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.property_object_class_name).to eq('RailsProperties::PropertyObject')
     end
 
     it "should define single key with class_name" do
       Configuration.new(Dummy, :dashboard, :class_name => 'MyClass')
-      expect(Dummy.default_settings).to eq({ :dashboard => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      expect(Dummy.default_properties).to eq({ :dashboard => {} })
+      expect(Dummy.property_object_class_name).to eq('MyClass')
     end
 
     it "should define multiple keys with class_name" do
       Configuration.new(Dummy, :dashboard, :calendar, :class_name => 'MyClass')
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      expect(Dummy.default_properties).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.property_object_class_name).to eq('MyClass')
     end
 
     it "should define using block" do
@@ -38,8 +38,8 @@ module RailsSettings
         c.key :calendar
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.default_properties).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.property_object_class_name).to eq('RailsProperties::PropertyObject')
     end
 
     it "should define using block with defaults" do
@@ -48,8 +48,8 @@ module RailsSettings
         c.key :calendar, :defaults => { :scope => 'all' }
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => { 'theme' => 'red' }, :calendar => { 'scope' => 'all'} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.default_properties).to eq({ :dashboard => { 'theme' => 'red' }, :calendar => { 'scope' => 'all'} })
+      expect(Dummy.property_object_class_name).to eq('RailsProperties::PropertyObject')
     end
 
     it "should define using block and class_name" do
@@ -58,8 +58,8 @@ module RailsSettings
         c.key :calendar
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      expect(Dummy.default_properties).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.property_object_class_name).to eq('MyClass')
     end
   end
 
