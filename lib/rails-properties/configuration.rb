@@ -27,6 +27,7 @@ module RailsProperties
       raise ArgumentError.new("has_properties: Symbol expected, but got a #{name.class}") unless name.is_a?(Symbol)
       raise ArgumentError.new("has_properties: Option :defaults expected, but got #{options.keys.join(', ')}") unless options.blank? || (options.keys == [:defaults])
       @klass.default_properties[name] = (options[:defaults] || {}).stringify_keys.freeze
+      @klass.property_object_class_name = options[:class_name] || 'RailsProperties::PropertyObject'
     end
   end
 end
