@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://gem-proxy.chime.com'
 
 gem 'activerecord', '~> 4.1.10'
 gem 'protected_attributes' if ENV['PROTECTED_ATTRIBUTES'] == 'true'

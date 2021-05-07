@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://gem-proxy.chime.com'
 
 gem 'activerecord', '~> 5.1.0'
 
