@@ -51,7 +51,7 @@ describe 'Queries performed' do
         user.properties(:dashboard).bar = 'string'
         user.properties(:calendar).bar = 'string'
         user.save!
-      }.to perform_queries(3)
+      }.to perform_queries(4)
     end
   end
 

@@ -12,7 +12,7 @@ module RailsProperties
           raise ArgumentError unless var.is_a?(Symbol)
           raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_properties[var]
 
-          property_objects.detect { |s| s.var == var.to_s }  || property_objects.build(:var => var.to_s, :target => self)
+          cached_properties[var] ||= property_objects.find_or_initialize_by(var: var)
         end
 
         def properties=(value)
@@ -37,6 +37,12 @@ module RailsProperties
             properties_hash[var] = properties_hash[var].merge(properties(var.to_sym).value)
           end
           properties_hash
+        end
+
+        private
+
+        def cached_properties
+          @cached_properties ||= {}
         end
       end
     end
