@@ -3,13 +3,8 @@ require 'spec_helper'
 describe RailsProperties::PropertyObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
 
-  if RailsProperties.can_protect_attributes?
-    let(:new_property_object) { user.property_objects.build({ :var => 'dashboard'}, :without_protection => true) }
-    let(:saved_property_object) { user.property_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}, :without_protection => true) }
-  else
-    let(:new_property_object) { user.property_objects.build({ :var => 'dashboard'}) }
-    let(:saved_property_object) { user.property_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}) }
-  end
+  let(:new_property_object) { user.property_objects.build({ :var => 'dashboard'}) }
+  let(:saved_property_object) { user.property_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}) }
 
   describe "serialization" do
     it "should have a hash default" do
@@ -116,15 +111,6 @@ describe RailsProperties::PropertyObject do
 
     it 'should not save blank hash' do
       expect(new_property_object.update({})).to be_truthy
-    end
-
-    if RailsProperties.can_protect_attributes?
-      it 'should not allow changing protected attributes' do
-        new_property_object.update_attributes!(:var => 'calendar', :foo => 42)
-
-        expect(new_property_object.var).to eq('dashboard')
-        expect(new_property_object.foo).to eq(42)
-      end
     end
   end
 

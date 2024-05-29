@@ -12,11 +12,7 @@ module RailsProperties
           raise ArgumentError unless var.is_a?(Symbol)
           raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_properties[var]
 
-          if RailsProperties.can_protect_attributes?
-            property_objects.detect { |s| s.var == var.to_s } || property_objects.build({ :var => var.to_s }, :without_protection => true)
-          else
-            property_objects.detect { |s| s.var == var.to_s } || property_objects.build(:var => var.to_s, :target => self)
-          end
+          property_objects.detect { |s| s.var == var.to_s }  || property_objects.build(:var => var.to_s, :target => self)
         end
 
         def properties=(value)
