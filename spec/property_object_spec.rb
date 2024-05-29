@@ -105,7 +105,7 @@ describe RailsProperties::PropertyObject do
 
   describe "update_attributes" do
     it 'should save' do
-      expect(new_property_object.update_attributes(:foo => 42, :bar => 'string')).to be_truthy
+      expect(new_property_object.update(:foo => 42, :bar => 'string')).to be_truthy
       new_property_object.reload
 
       expect(new_property_object.foo).to eq(42)
@@ -115,7 +115,7 @@ describe RailsProperties::PropertyObject do
     end
 
     it 'should not save blank hash' do
-      expect(new_property_object.update_attributes({})).to be_truthy
+      expect(new_property_object.update({})).to be_truthy
     end
 
     if RailsProperties.can_protect_attributes?

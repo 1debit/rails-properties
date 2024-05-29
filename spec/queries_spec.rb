@@ -94,7 +94,7 @@ describe 'Queries performed' do
 
     it "should update properties by one SQL query" do
       expect {
-        user.properties(:dashboard).update_attributes! :foo => 'bar'
+        user.properties(:dashboard).update! :foo => 'bar'
       }.to perform_queries(1)
     end
   end

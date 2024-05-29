@@ -145,7 +145,7 @@ describe "Object without properties" do
   end
 
   it "should add properties" do
-    user.properties(:dashboard).update_attributes! :smart => true
+    user.properties(:dashboard).update! :smart => true
 
     user.reload
     expect(user.properties(:dashboard).smart).to eq(true)
@@ -179,7 +179,7 @@ describe "Object with properties" do
   end
 
   it "should update properties" do
-    user.properties(:dashboard).update_attributes! :smart => true
+    user.properties(:dashboard).update! :smart => true
     user.reload
 
     expect(user.properties(:dashboard).smart).to eq(true)

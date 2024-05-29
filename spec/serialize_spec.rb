@@ -25,7 +25,7 @@ describe "Serialization" do
 
   describe 'updated properties' do
     it 'should be serialized' do
-      user.properties(:dashboard).update_attributes! :smart => true
+      user.properties(:dashboard).update! :smart => true
 
       dashboard_properties = user.property_objects.where(:var => 'dashboard').first
       calendar_properties = user.property_objects.where(:var => 'calendar').first
