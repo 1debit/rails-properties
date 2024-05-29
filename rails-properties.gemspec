@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activerecord', '>= 3.1'
 
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'sqlite3', "~> 1.4"
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'coveralls'
   gem.add_development_dependency 'simplecov', RUBY_VERSION < '2' ? '~> 0.11.2' : '>= 0.11.2'
