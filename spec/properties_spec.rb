@@ -246,3 +246,17 @@ describe "to_properties_hash" do
     expect(user.to_properties_hash).to eq({:dashboard=>{"theme"=>"green", "view"=>"monthly", "filter"=>true, "sound" => 11}, :calendar=>{"scope"=>"some"}})
   end
 end
+
+describe "reloading the target with unsaved property changes" do
+  let(:user) { User.create! }
+
+  before do
+    user.properties(:dashboard).theme = 'green'
+  end
+
+  it "should reset unsaved properties" do
+    user.reload
+    # blue is the default theme value
+    expect(user.properties(:dashboard).theme).to eq('blue')
+  end
+end
