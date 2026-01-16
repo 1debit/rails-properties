@@ -13,7 +13,11 @@ module RailsProperties
       end
     end
 
-    serialize :value, Hash
+    if ActiveRecord.version >= Gem::Version.new('7.1')
+      serialize :value, coder: YAML, type: Hash
+    else
+      serialize :value, Hash
+    end
 
     if RailsProperties.can_protect_attributes?
       # attr_protected can not be used here because it touches the database which is not connected yet.
