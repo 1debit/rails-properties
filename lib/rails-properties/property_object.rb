@@ -13,7 +13,7 @@ module RailsProperties
       end
     end
 
-    serialize :value, Hash
+    serialize :value, type: Hash, coder: YAML
 
     if RailsProperties.can_protect_attributes?
       # attr_protected can not be used here because it touches the database which is not connected yet.
@@ -23,6 +23,16 @@ module RailsProperties
 
     REGEX_SETTER = /\A([a-z]\w+)=\Z/i
     REGEX_GETTER = /\A([a-z]\w+)\Z/i
+
+    # Rails 7.2 removed `update_attributes/update_attributes!`
+    # add a shim to delegate to `update/update!` for backwards compatibility
+    def update_attributes(attrs)
+      update(attrs)
+    end
+
+    def update_attributes!(attrs)
+      update!(attrs)
+    end
 
     def respond_to?(method_name, include_priv=false)
       super || method_name.to_s =~ REGEX_SETTER || _property?(method_name)
