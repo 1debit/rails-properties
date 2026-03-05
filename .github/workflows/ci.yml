@@ -18,7 +18,9 @@ jobs:
           - '3.3'
           - '3.4'
           - '4.0'
+        # Be aware you have to update the `Appraisals` file when adding new activerecord versions!
         activerecord:
+          - '7.0'
           - '7.1'
           - '7.2'
           - '8.0'
